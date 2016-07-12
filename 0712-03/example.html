@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>events</title>
+    <style media="screen">
+    * {
+      box-sizing: border-box
+    }
+    ul {
+      padding: 0
+    }
+    .add-item {
+      width: 200px
+    }
+    .item {
+      height: 30px;
+      line-height: 30px;
+      list-style: none
+    }
+    .remove-item {
+      margin-left: 2em
+    }
+    .vue {
+      display: none
+    }
+    .complete.vue {
+      display: block;
+    }
+    </style>
+  </head>
+  <body>
+    <h2>待办事项</h2>
+    <div class="vue" :class="{ 'complete' : isComplete}" id="container">
+      <input class="add-item" placeholder="回车键添加，点击标题可修改内容" v-model="newItem" @keyup.enter="addItem">
+      <ul v-for="item in items">
+        <li class="item">
+          <input v-if="true === this.items[$index].edit" v-model="item.text" @keyup.enter="saveItem($index)"/>
+          <span @click="editItem($index)" v-else>{{$index + 1}}. {{item.text}}</span>
+          <button class="remove-item" @click="removeItem($index)">X</button>
+        </li>
+      </ul>
+    </div>
+    <script src="../libs/vue.js"></script>
+    <script type="text/javascript">
+      var vm = new Vue({
+        el: '#container',
+        data: {
+          items: [
+            {
+              text: '吃晚饭',
+              edit: false
+            }
+          ],
+          isComplete: false,
+          newItem: null
+        },
+        methods: {
+          addItem () {
+            this.items.push({
+              text: this.newItem,
+              edit: false
+            })
+            this.newItem = null              // 添加一个节点 并将newItem还原
+          },
+          removeItem (index) {
+            this.items.splice(index, 1)       // 移除某项
+          },
+          editItem (index) {
+            this.items[index].edit = true    // 开启编辑模式
+          },
+          saveItem (index) {
+            this.items[index].edit = false  // 关闭编辑模式
+          }
+        },
+        created () {
+          this.isComplete = true;
+        }
+      })
+
+    </script>
+  </body>
+</html>
