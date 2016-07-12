@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>生命周期的一些钩子</title>
+  </head>
+  <body>
+    <div id="container">
+
+    </div>
+    <div id="container2">
+
+    </div>
+    <div id="container3">
+
+    </div>
+    <script src="../libs/vue.js"></script>
+    <script type="text/javascript">
+      // 一个存在于dom树中的dom元素
+      var vm1 = new Vue({
+        el: '#container',
+        data: {
+          age: 18
+        },
+        template: '<span></span>',
+        replace: false,
+        created () {
+          console.log(`created:
+            this.$el: ${this.$el}
+            document.getElementById('container').innerHTML: ${document.getElementById('container').innerHTML}`);
+        },
+        beforeCompile () {
+          console.log(`beforeCompile:
+            this.$el: ${this.$el}
+            document.getElementById('container').innerHTML: ${document.getElementById('container').innerHTML}`);
+        },
+        ready () {
+          console.log(`ready:
+            this.$el: ${this.$el}
+            document.getElementById('container').innerHTML: ${document.getElementById('container').innerHTML}`);
+        }
+      });
+
+      // 一个不提供el参数的对象
+      var vm2 = new Vue({
+        template: '<p id="demo">{{message}}</p>',
+        data: {
+          message: 'hello'
+        },
+        created () {
+          console.log(`created:
+            this.$el: ${this.$el}
+            document.getElementById('demo'): ${document.getElementById('demo')}`);
+        },
+        beforeCompile () {
+          console.log(`beforeCompile:
+            this.$el: ${this.$el.innerHTML}
+            document.getElementById('demo'): ${document.getElementById('demo')}`);
+        },
+        ready () {
+          console.log(`ready:
+            this.$el: ${this.$el}
+            document.getElementById('demo').innerHTML: ${document.getElementById('demo').innerHTML}`);
+        }
+      });
+
+      console.log('调用$mount');
+      vm2.$mount('#container2');
+
+      // 一个不存在于dom树中的dom元素
+      var vm2 = new Vue({
+        template: '<p id="demo2">{{message}}</p>',
+        data: {
+          message: 'hello2'
+        },
+        created () {
+          console.log(`created:
+            this.$el: ${this.$el}
+            document.getElementById('demo2'): ${document.getElementById('demo2')}`);
+        },
+        beforeCompile () {
+          console.log(`beforeCompile:
+            this.$el: ${this.$el.innerHTML}
+            document.getElementById('demo2'): ${document.getElementById('demo2')}`);
+        },
+        ready () {
+          console.log(`ready:
+            this.$el: ${this.$el}
+            document.getElementById('demo2').innerHTML: ${document.getElementById('demo2').innerHTML}`);
+        }
+      });
+
+      console.log('调用$mount');
+      var vm3 = vm2.$mount(document.createElement('div'));  // 这时候因为还没有插入到dom树中 所以不会调用ready方法
+      console.log('将vm3插入到dom树中');
+      vm3.$appendTo('#container3')
+    </script>
+  </body>
+</html>
