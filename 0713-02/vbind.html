@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>v-bind</title>
+  </head>
+  <body>
+    <div id="demo">
+      <input v-model="name">
+      <input type="checkbox" v-model="name" v-bind:false-value="first" v-bind:true-value="last">
+    </div>
+    <script src="../libs/vue.js"></script>
+    <script type="text/javascript">
+      var vm = new Vue({
+        el: '#demo',
+        data: {
+          name: 'niko',
+          first: 'niko',
+          last: 'bellic'
+        }
+      });
+    </script>
+  </body>
+</html>
